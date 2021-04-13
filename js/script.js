@@ -31,29 +31,64 @@ let myLibrary = [
     }
 ];
 
-function Book(title, author) {
-    this.author = author;
+function Book(title, author, page, isRead) {
     this.title = title;
-    this.pages = 0;
-    this.isRead = false;
+    this.author = author;
+    this.pages = page;
+    this.isRead = isRead;
+}
+
+function loadBooks() {
+    myLibrary.forEach((book, idx) => {
+        const isExist = document.getElementById(`card-${idx}`);
+    
+        if(isExist) {
+            return;
+        }
+
+        const btnClass = book.isRead ? 'fa-check-square' : 'fa-square';
+        const card = `
+        <div data-value=${idx} id="card-${idx}" class="card">
+            <h2 class="card-title">${book.title}</h2>
+            <small>by ${book.author}</small>
+            <div class="footer">
+                <h5>Pages: <u>${book.pages}</u></h5>
+                <div class="btn">
+                    <i class="far ${btnClass}"></i>
+                </div>
+            </div>
+        </div>`;
+
+        container.innerHTML += card;
+    });
 }
 
 const container = document.querySelector('.container');
+const addBtn = document.querySelector('.bookForm button');
+const titleTxt = document.getElementById('title');
+const authorTxt = document.getElementById('author');
+const pageNoTxt = document.getElementById('pageNo');
+const isReadCheck = document.getElementById('isRead');
+const showFormBtn = document.getElementById('addBtn');
+const addForm = document.querySelector('.bookForm');
 
-myLibrary.forEach((book, idx) => {
+showFormBtn.addEventListener('click', () => {
+    addForm.classList.toggle('active');
+    container.classList.toggle('popup');
+});
 
-    const btnClass = book.isRead ? 'fa-check-square' : 'fa-square';
-    const card = `
-    <div data-value=${idx} class="card">
-        <h2 class="card-title">${book.title}</h2>
-        <small>by ${book.author}</small>
-        <div class="footer">
-            <h5>Pages: <u>${book.pages}</u></h5>
-            <div class="btn">
-                <i class="far ${btnClass}"></i>
-            </div>
-        </div>
-    </div>`;
+addBtn.addEventListener('click', () => {
+    const newBook = new Book(titleTxt.value, authorTxt.value, pageNoTxt.value, isReadCheck.value);
+    const allInputs = document.querySelectorAll('input');
+    allInputs.forEach( input => input.value = '');
 
-    container.innerHTML += card;
-})
+    if(myLibrary.some(book => book.title === newBook.title)){
+        return;
+    }
+    
+    myLibrary.push(newBook);
+    loadBooks();
+});
+
+
+loadBooks();
