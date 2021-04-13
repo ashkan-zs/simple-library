@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css"
-        integrity="sha512-OdEXQYCOldjqUEsuMKsZRj93Ht23QRlhIb8E/X0sbwZhme8eUw6g8q7AdxGJKakcBbv7+/PX0Gc2btf7Ru8cZA=="
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" />
 </head>
 
@@ -16,6 +16,20 @@
 
     <div class="container">
 
+        <button id="addBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <div class="bookForm">
+        <input id="title" type="text" placeholder="Title">
+        <input type="text" placeholder="Author" id="author">
+        <input type="number" placeholder="Number of Pages" id="pageNo">
+        <div class="formControl">
+            <label for="isRead">Do You Read It?</label>
+            <input type="checkbox" id="isRead">
+        </div>
+        <button id="addBook">Add Book</button>
     </div>
 
     <script src="js/script.js"></script>
