@@ -110,7 +110,10 @@ showFormBtn.addEventListener('click', () => {
 });
 
 addBtn.addEventListener('click', () => {
+    const id = myLibrary[myLibrary.length - 1].id;
     const newBook = new Book(titleTxt.value, authorTxt.value, pageNoTxt.value, isReadCheck.value);
+
+    newBook.id = id + 1;
 
     clearForm();
 
