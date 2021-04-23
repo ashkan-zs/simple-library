@@ -1,29 +1,34 @@
 let myLibrary = [
     {
+        id: 0,
         title: 'Harry Potter and the Philosopher\'s Stone',
         author: 'J.K Rowling',
         pages: 223,
         isRead: true 
     },
     {
+        id: 1,
         title: 'Harry Potter and the Chamber of Secret',
         author: 'J.K Rowling',
         pages: 251,
         isRead: true 
     },
     {
+        id: 2,
         title: 'Harry Potter and the Prisoner of Azkaban',
         author: 'J.K Rowling',
         pages: 317,
         isRead: false 
     },
     {
+        id: 3,
         title: 'Harry Potter and the Goblet of Fire',
         author: 'J.K Rowling',
         pages: 636,
         isRead: true 
     },
     {
+        id: 4,
         title: 'Harry Potter and the Order of the Phoenix',
         author: 'J.K Rowling',
         pages: 636,
@@ -38,30 +43,43 @@ function Book(title, author, page, isRead) {
     this.isRead = isRead;
 }
 
-function loadBooks() {
-    myLibrary.forEach((book, idx) => {
-        const isExist = document.getElementById(`card-${idx}`);
-    
-        if(isExist) {
-            return;
-        }
+function deleteItem(id) {
 
+    myLibrary = myLibrary.filter( (book) => book.id != id);
+    console.log(`book with id ${id} removed.`);
+    
+    loadBooks();
+}
+
+function loadBooks() {
+    console.log('library updated!');
+    console.log(myLibrary);
+    container.innerHTML = '';
+    myLibrary.forEach((book) => {
+        
         const card = `
-        <div data-value=${idx} id="card-${idx}" class="card">
+        <div data-id=${book.id} id="card-${book.id}" class="card">
             <h2 class="card-title">${book.title}</h2>
             <small>by ${book.author}</small>
             <div class="footer">
                 <h5>Pages: <u>${book.pages}</u></h5>
                 <div class="btn">
-                    <i data-value=${idx} class="far ${book.isRead ? 'fa-check-square read' : 'fa-square not-read'}"></i>
+                    <i data-id=${book.id} class="far ${book.isRead ? 'fa-check-square read' : 'fa-square not-read'}"></i>
                 </div>
                 <div class="btn deleteBtn">
-                    <i data-value=${idx} class="fas fa-trash-alt" onclick="deleteItem()"></i>
+                    <i data-id=${book.id} class="fas fa-trash-alt"></i>
                 </div>
             </div>
         </div>`;
 
         container.innerHTML += card;
+    });
+    const deleteBtn = document.querySelectorAll('div.deleteBtn');
+    
+    deleteBtn.forEach( (btn) => {
+        btn.addEventListener('click', (e) => {
+            deleteItem(e.target.dataset.id);
+        })
     });
 }
 
@@ -107,14 +125,3 @@ addBtn.addEventListener('click', () => {
 
 loadBooks();
 
-const deleteBtn = document.querySelectorAll('div.deleteBtn');
-
-function deleteItem(e) {
-    const arrayIdx = e.target.getAttribute('data-value');
-
-    console.log(arrayIdx);
-
-    myLibrary = myLibrary.slice(0, arrayIdx).concat(myLibrary.slice(arrayIdx + 1, myLibrary.length))
-    
-    loadBooks();
-}
