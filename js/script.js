@@ -46,7 +46,6 @@ function loadBooks() {
             return;
         }
 
-        const btnClass = book.isRead ? 'fa-check-square' : 'fa-square';
         const card = `
         <div data-value=${idx} id="card-${idx}" class="card">
             <h2 class="card-title">${book.title}</h2>
@@ -54,13 +53,26 @@ function loadBooks() {
             <div class="footer">
                 <h5>Pages: <u>${book.pages}</u></h5>
                 <div class="btn">
-                    <i class="far ${btnClass}"></i>
+                    <i data-value=${idx} class="far ${book.isRead ? 'fa-check-square read' : 'fa-square not-read'}"></i>
+                </div>
+                <div class="btn deleteBtn">
+                    <i data-value=${idx} class="fas fa-trash-alt" onclick="deleteItem()"></i>
                 </div>
             </div>
         </div>`;
 
         container.innerHTML += card;
     });
+}
+
+function showPopup() {
+    addForm.classList.toggle('active');
+    container.classList.toggle('popup');
+}
+
+function clearForm() {
+    const allInputs = document.querySelectorAll('input');
+    allInputs.forEach( input => input.value = '');
 }
 
 const container = document.querySelector('.container');
@@ -72,23 +84,37 @@ const isReadCheck = document.getElementById('isRead');
 const showFormBtn = document.getElementById('addBtn');
 const addForm = document.querySelector('.bookForm');
 
+
+
 showFormBtn.addEventListener('click', () => {
-    addForm.classList.toggle('active');
-    container.classList.toggle('popup');
+    clearForm();
+    showPopup();
 });
 
 addBtn.addEventListener('click', () => {
     const newBook = new Book(titleTxt.value, authorTxt.value, pageNoTxt.value, isReadCheck.value);
-    const allInputs = document.querySelectorAll('input');
-    allInputs.forEach( input => input.value = '');
+
+    clearForm();
 
     if(myLibrary.some(book => book.title === newBook.title)){
         return;
     }
-    
+
     myLibrary.push(newBook);
+    showPopup();
     loadBooks();
 });
 
-
 loadBooks();
+
+const deleteBtn = document.querySelectorAll('div.deleteBtn');
+
+function deleteItem(e) {
+    const arrayIdx = e.target.getAttribute('data-value');
+
+    console.log(arrayIdx);
+
+    myLibrary = myLibrary.slice(0, arrayIdx).concat(myLibrary.slice(arrayIdx + 1, myLibrary.length))
+    
+    loadBooks();
+}
