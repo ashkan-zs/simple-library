@@ -45,6 +45,25 @@ class Book {
     }
 }
 
+function addBookToLibrary() {
+    const id = myLibrary[myLibrary.length - 1].id;
+    console.log(isReadCheck);
+    
+    const newBook = new Book(titleTxt.value, authorTxt.value, pageNoTxt.value, isReadCheck.checked);
+
+    newBook.id = id + 1;
+
+    clearForm();
+
+    if(myLibrary.some(book => book.title === newBook.title)){
+        return;
+    }
+
+    myLibrary.push(newBook);
+    showPopup();
+    loadBooks();
+}
+
 function deleteItem(id) {
 
     myLibrary = myLibrary.filter( (book) => book.id != id);
@@ -59,6 +78,8 @@ function clearBooks() {
 
 function loadBooks() {
     console.log('library updated!');
+
+    clearBooks();
 
     myLibrary.forEach((book) => {
         const card = `
@@ -94,7 +115,11 @@ function showPopup() {
 
 function clearForm() {
     const allInputs = document.querySelectorAll('input');
-    allInputs.forEach( input => input.value = '');
+    allInputs.forEach( input => {
+        input.value = '';
+        if (input.type == 'checkbox')
+            input.checked = false;
+    });
 }
 
 const container = document.querySelector('.container');
@@ -112,20 +137,7 @@ showFormBtn.addEventListener('click', () => {
 });
 
 addBtn.addEventListener('click', () => {
-    const id = myLibrary[myLibrary.length - 1].id;
-    const newBook = new Book(titleTxt.value, authorTxt.value, pageNoTxt.value, isReadCheck.value);
-
-    newBook.id = id + 1;
-
-    clearForm();
-
-    if(myLibrary.some(book => book.title === newBook.title)){
-        return;
-    }
-
-    myLibrary.push(newBook);
-    showPopup();
-    loadBooks();
+    addBookToLibrary();
 });
 
 loadBooks();
