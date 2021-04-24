@@ -36,11 +36,13 @@ let myLibrary = [
     }
 ];
 
-function Book(title, author, page, isRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = page;
-    this.isRead = isRead;
+class Book {
+    constructor(title, author, page, isRead) {
+        this.title = title;
+        this.author = author;
+        this.pages = page;
+        this.isRead = isRead;
+    }
 }
 
 function deleteItem(id) {
@@ -51,12 +53,14 @@ function deleteItem(id) {
     loadBooks();
 }
 
+function clearBooks() {
+    container.innerHTML = '';
+}
+
 function loadBooks() {
     console.log('library updated!');
-    console.log(myLibrary);
-    container.innerHTML = '';
+
     myLibrary.forEach((book) => {
-        
         const card = `
         <div data-id=${book.id} id="card-${book.id}" class="card">
             <h2 class="card-title">${book.title}</h2>
@@ -102,8 +106,6 @@ const isReadCheck = document.getElementById('isRead');
 const showFormBtn = document.getElementById('addBtn');
 const addForm = document.querySelector('.bookForm');
 
-
-
 showFormBtn.addEventListener('click', () => {
     clearForm();
     showPopup();
@@ -127,4 +129,3 @@ addBtn.addEventListener('click', () => {
 });
 
 loadBooks();
-
